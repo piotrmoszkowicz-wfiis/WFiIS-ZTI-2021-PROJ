@@ -1,0 +1,12 @@
+#set($final = $context.arguments.rule)
+#set($ctx.stash.id = $util.autoId())
+$util.quiet($final.put("id", $ctx.stash.id))
+{
+    "version": "2018-05-29",
+    "operation": "PutItem",
+    "key": {
+        "PK": $util.dynamodb.toDynamoDBJson("RULES"),
+        "SK": $util.dynamodb.toDynamoDBJson("RULE#${final.incomingText}")
+    },
+    "attributeValues": $util.dynamodb.toMapValuesJson($final)
+}

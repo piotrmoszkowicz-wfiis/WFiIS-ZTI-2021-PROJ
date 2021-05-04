@@ -1,0 +1,8 @@
+{
+    "version" : "2018-05-29",
+    "operation" : "DeleteItem",
+    "key": {
+        "PK": $util.dynamodb.toDynamoDBJson("RULES"),
+        "SK": $util.dynamodb.toDynamoDBJson("RULE#${context.args.incomingText}")
+    },
+}

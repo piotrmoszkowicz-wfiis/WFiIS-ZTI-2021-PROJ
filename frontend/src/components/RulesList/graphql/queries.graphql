@@ -1,0 +1,7 @@
+query getRules {
+    getRules {
+        id
+        incomingText
+        outgoingText
+    }
+}

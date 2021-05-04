@@ -1,0 +1,19 @@
+type Query {
+    getRules: [Rule!]!
+}
+
+type Mutation {
+    addNewRule(rule: RuleInput!): Rule!
+    deleteRule(incomingText: String!): Boolean!
+}
+
+type Rule {
+    id: ID!
+    incomingText: String!
+    outgoingText: String!
+}
+
+input RuleInput {
+    incomingText: String!
+    outgoingText: String!
+}

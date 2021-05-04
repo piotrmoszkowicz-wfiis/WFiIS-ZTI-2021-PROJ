@@ -1,0 +1,3 @@
+#set($final = $ctx.result)
+$util.quiet($final.put("id", $ctx.stash.id))
+$util.toJson($final)

@@ -1,0 +1,11 @@
+mutation addRule($ruleInput: RuleInput!) {
+    addNewRule(rule: $ruleInput) {
+        id
+        incomingText
+        outgoingText
+    }
+}
+
+mutation deleteRule($incomingText: String!) {
+    deleteRule(incomingText: $incomingText)
+}

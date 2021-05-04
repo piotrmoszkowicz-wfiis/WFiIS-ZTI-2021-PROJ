@@ -1,0 +1,11 @@
+{
+    "version": "2018-05-29",
+    "operation": "Query",
+    "query" : {
+    "expression" : "PK = :PK and begins_with(SK, :SK)",
+    "expressionValues" : {
+        ":PK" : $util.dynamodb.toDynamoDBJson("RULES"),
+        ":SK" : $util.dynamodb.toDynamoDBJson("RULE#")
+        }
+    }
+}

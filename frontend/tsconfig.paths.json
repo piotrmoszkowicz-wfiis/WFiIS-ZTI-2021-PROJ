@@ -1,0 +1,14 @@
+
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@enums/*": ["./src/enums/*"],
+      "@generated/*": ["./src/generated/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@themes/*": ["./src/themes/*"]
+    }
+  }
+}
