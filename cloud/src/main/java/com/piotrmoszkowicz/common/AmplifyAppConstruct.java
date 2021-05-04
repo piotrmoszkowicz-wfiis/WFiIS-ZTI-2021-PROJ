@@ -59,15 +59,15 @@ public class AmplifyAppConstruct extends Construct {
                         "frontend", Map.of(
                                 "phases", Map.of(
                                         "preBuild", Map.of(
-                                                "commands", List.of("cd cloud", "bash ./src/main/resources/setEnvs.bash", "cd ../frontend", "yarn"),
-                                            "build", Map.of(
-                                                    "commands", List.of("yarn build")
-                                                )
+                                                "commands", List.of("cd cloud", "bash ./src/main/resources/setEnvs.bash", "cd ../frontend", "yarn")
                                         ),
-                                    "artifacts", Map.of(
-                                            "baseDirectory", "frontend/build",
-                                            "files", "**/*"
+                                        "build", Map.of(
+                                                "commands", List.of("yarn build")
                                         )
+                                ),
+                                "artifacts", Map.of(
+                                        "baseDirectory", "frontend/build",
+                                        "files", "**/*"
                                 )
                         )
                 )))
