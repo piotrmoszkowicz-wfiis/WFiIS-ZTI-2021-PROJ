@@ -82,6 +82,8 @@ public class AmplifyAppConstruct extends Construct {
                 .build()
         );
 
+        amplifyApp.addCustomRule(CustomRule.SINGLE_PAGE_APPLICATION_REDIRECT);
+
         amplifyApp.addBranch("master", BranchOptions.builder()
                 .branchName("master")
                 .pullRequestPreview(true)
