@@ -54,12 +54,12 @@ public class AmplifyAppConstruct extends Construct {
         );
 
         amplifyApp = new App(this, "AmplifyApp", AppProps.builder()
-                .buildSpec(BuildSpec.fromObjectToYaml(Map.of(
+                .buildSpec(BuildSpec.fromObject(Map.of(
                         "version", "1.0",
                         "frontend", Map.of(
                                 "phases", Map.of(
                                         "preBuild", Map.of(
-                                                "commands", List.of("cd cloud", "bash ./src/main/resources/setEnvs.bash", "cd ../frontend", "yarn")
+                                                "commands", List.of("cd cloud", "source ./src/main/resources/setEnvs.bash", "cd ../frontend", "yarn")
                                         ),
                                         "build", Map.of(
                                                 "commands", List.of("yarn build")
