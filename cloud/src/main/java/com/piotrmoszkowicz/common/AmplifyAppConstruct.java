@@ -6,6 +6,7 @@ import software.amazon.awscdk.core.SecretsManagerSecretOptions;
 
 import software.amazon.awscdk.services.amplify.*;
 import software.amazon.awscdk.services.codebuild.*;
+import software.amazon.awscdk.services.iam.*;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,42 @@ public class AmplifyAppConstruct extends Construct {
 
     public AmplifyAppConstruct(final Construct scope, final String id) {
         super(scope, id);
+
+        var wildcardStackArn = String
+                .format("arn:aws:cloudformation:%s:%s:stack/*", System.getenv("CDK_DEFAULT_REGION"), System.getenv("CDK_DEFAULT_ACCOUNT"));
+
+        var amplifyPolicy = new ManagedPolicy(this, "AmplifyPolicy", ManagedPolicyProps.builder()
+                .managedPolicyName("AmplifyCICDPolicy")
+                .statements(List.of(
+                        new PolicyStatement(PolicyStatementProps.builder()
+                                .actions(List.of(
+                                        "cloudformation:CreateChangeSet",
+                                        "cloudformation:DeleteChangeSet",
+                                        "cloudformation:DescribeChangeSet",
+                                        "cloudformation:DescribeStackEvents",
+                                        "cloudformation:DescribeStackResource",
+                                        "cloudformation:DescribeStackResources",
+                                        "cloudformation:DescribeStacks",
+                                        "cloudformation:ExecuteChangeSet",
+                                        "cloudformation:GetTemplate",
+                                        "cloudformation:UpdateStack"
+                                ))
+                                .effect(Effect.ALLOW)
+                                .resources(List.of(wildcardStackArn))
+                                .build()
+                        )
+                ))
+                .build()
+        );
+
+        var amplifyRole = new Role(this, "AmplifyRole", RoleProps.builder()
+                .assumedBy(new ServicePrincipal("amplify.amazonaws.com"))
+                .managedPolicies(List.of(
+                        ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess-Amplify"),
+                        amplifyPolicy
+                ))
+                .build()
+        );
 
         amplifyApp = new App(this, "AmplifyApp", AppProps.builder()
                 .buildSpec(BuildSpec.fromObjectToYaml(Map.of(
@@ -41,6 +78,7 @@ public class AmplifyAppConstruct extends Construct {
                         .oauthToken(SecretValue.secretsManager("github_token", SecretsManagerSecretOptions.builder().jsonField("GITHUB_TOKEN").build()))
                         .build()
                 ))
+                .role(amplifyRole)
                 .build()
         );
 
