@@ -47,7 +47,10 @@ const AddRuleView: React.FC<Props> = ({ addRule }) => {
             value={ruleInput.outgoingText}
             required
           />
-          <Button variant="contained" onClick={() => addRule(ruleInput)}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => addRule(ruleInput)}>
             Add!
           </Button>
         </Box>
