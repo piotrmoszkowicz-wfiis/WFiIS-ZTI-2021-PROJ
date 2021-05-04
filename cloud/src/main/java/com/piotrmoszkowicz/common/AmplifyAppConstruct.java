@@ -8,6 +8,7 @@ import software.amazon.awscdk.services.amplify.AppProps;
 import software.amazon.awscdk.services.codebuild.*;
 import software.amazon.awscdk.services.iam.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,8 @@ public class AmplifyAppConstruct extends Construct {
         );
 
         amplifyApp = new App(this, "AmplifyApp", AppProps.builder()
-                .buildSpec(BuildSpec.fromObject(Map.of(
+                // Yup, Java sucks and sorts keys... That's why "preBuild" is after "build" and for some reason that doesn't go well with Amplify... LinkedHashMap fixes issue...
+                .buildSpec(BuildSpec.fromObject(new LinkedHashMap<>(Map.of(
                         "version", "1.0",
                         "frontend", Map.of(
                                 "phases", Map.of(
@@ -70,7 +72,7 @@ public class AmplifyAppConstruct extends Construct {
                                         "files", List.of("**/*")
                                 )
                         )
-                )))
+                ))))
                 .sourceCodeProvider(new GitHubSourceCodeProvider(GitHubSourceCodeProviderProps
                         .builder()
                         .owner("piotrmoszkowicz-wfiis")
