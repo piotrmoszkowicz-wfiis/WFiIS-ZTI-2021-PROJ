@@ -1,10 +1,10 @@
 package com.piotrmoszkowicz.common;
 
-import software.amazon.awscdk.core.Construct;
-import software.amazon.awscdk.core.SecretValue;
-import software.amazon.awscdk.core.SecretsManagerSecretOptions;
+import software.amazon.awscdk.core.*;
 
 import software.amazon.awscdk.services.amplify.*;
+import software.amazon.awscdk.services.amplify.App;
+import software.amazon.awscdk.services.amplify.AppProps;
 import software.amazon.awscdk.services.codebuild.*;
 import software.amazon.awscdk.services.iam.*;
 
@@ -67,7 +67,7 @@ public class AmplifyAppConstruct extends Construct {
                                 ),
                                 "artifacts", Map.of(
                                         "baseDirectory", "frontend/build",
-                                        "files", "**/*"
+                                        "files", List.of("**/*")
                                 )
                         )
                 )))
@@ -90,7 +90,16 @@ public class AmplifyAppConstruct extends Construct {
                 .stage("PRODUCTION")
                 .build()
         );
+
+        // ========================================================================
+        // Exports
+        // ========================================================================
+        new CfnOutput(this, "AmplifyDomainExport", CfnOutputProps.builder()
+                .exportName("amplifyDomain")
+                .value(getAmplifyAppUrl())
+                .build()
+        );
     }
 
-    public String getAmplifyAppUrl() { return amplifyApp.getDefaultDomain(); }
+    public String getAmplifyAppUrl() { return "master." + amplifyApp.getDefaultDomain(); }
 }
